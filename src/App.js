@@ -1,11 +1,13 @@
 import "./App.css";
+import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
+import Home from "./components/Home";
 import BeersList from "./components/BeersList";
-import BeerDetails from "./components/BeersList";
+import BeerDetails from "./components/BeerDetails";
+import RandomBeer from "./components/RandomBeer";
+import NewBeerForm from "./components/NewBeerForm";
 
 import axios from "axios";
-import { useState, useEffect } from "react";
 
 function App() {
   const [beers, setBeers] = useState([]);
@@ -13,6 +15,7 @@ function App() {
   useEffect(() => {
     axios.get("https://ih-beers-api2.herokuapp.com/beers").then((result) => {
       const data = result.data;
+      console.log(data);
       setBeers(data);
     });
   }, []);
@@ -20,13 +23,13 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        <Navbar />
         <Routes>
-          <Route path="	/beers" element={<BeersList beers={beers} />} />
-          <Route path="	/:id" />
-          <Route path="	/random-beer" />
-          <Route path="	/new-beer" />
-          <Route path="	/search?q={query}" />
+          <Route path="/" element={<Home />} />
+          <Route path="/beers" element={<BeersList beers={beers} />} />
+          <Route path="/random-beer" element={<RandomBeer />} />
+          <Route path="/new-beer" element={<NewBeerForm />} />{" "}
+          <Route path="/beers/:id" element={<BeerDetails />} />
+          <Route path="/search?q={query}" />
         </Routes>
       </div>
     </BrowserRouter>
